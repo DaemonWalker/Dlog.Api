@@ -1,6 +1,7 @@
 ﻿using Dlog.Api.Models;
 using Dlog.Api.Utils;
 using Microsoft.Extensions.Configuration;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -67,7 +68,7 @@ namespace Dlog.Api.Data
         }
         public List<string> GetTimeLineNodes()
         {
-            var projection = Builders<ServerArticleModel>.Projection.Expression<string>(p => p.Date.Substring(0, 7));
+            var projection = Builders<ServerArticleModel>.Projection.Expression<string>(p => p.Date.Substring(0, 4));
             return mongoDB
                 .GetArticle()
                 .Find(Builders<ServerArticleModel>.Filter.Empty)
@@ -86,6 +87,32 @@ namespace Dlog.Api.Data
                 list.AddRange(tag);
             }
             return list;
+        }
+        public List<TimeLineNodeModel> GetTimeLine(int? year)
+        {
+            var regex = new BsonRegularExpression($"{year}");
+            var filter = Builders<ServerArticleModel>.Filter.Empty;
+            if (year != null)
+            {
+                filter = Builders<ServerArticleModel>.Filter.Regex(p => p.Date, regex);
+            }
+            return mongoDB
+                .GetArticle()
+                .Find(filter)
+                .SortByDescending(p => p.Date)
+                .ToList()
+                .Select(p => new TimeLineNodeModel()
+                {
+                    BlogDate = p.Date,
+                    Title = p.Title,
+                    Url = p.ID
+                })
+                .ToList();
+        }
+        public List<ServerArticleModel> GetByTag(string tag)
+        {
+            var filter = Builders<ServerArticleModel>.Filter.All(p => p.Tags, new List<string>() { tag });
+            return mongoDB.GetArticle().Find(filter).ToList();
         }
     }
 }

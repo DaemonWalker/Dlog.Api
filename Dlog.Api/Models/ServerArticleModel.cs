@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Dlog.Api.Models
 {
+    [BsonIgnoreExtraElements]
     public class ServerArticleModel
     {
         [MongoKey]
@@ -18,8 +19,6 @@ namespace Dlog.Api.Models
         public long Seen { get; set; }
         public List<string> Tags { get; set; }
         public string Date { get; set; }
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string _id { get; set; }
 
     }
 }

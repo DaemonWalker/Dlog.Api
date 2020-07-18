@@ -11,7 +11,7 @@ namespace Dlog.Api.Models
         public ServerResponseInfoModel ServerResponse { get; set; } = new ServerResponseInfoModel();
        
         public NavDataModel NavData { get; set; }
-        public List<ArticleSummaryModel> IndexArticles { get; set; }
+        public List<ArticleSummaryModel> ArticleSummaries { get; set; }
         public string Token { get; set; }
         public List<TimeLineNodeModel> TimeLine { get; set; }
         public ArticleModel Article { get; set; }

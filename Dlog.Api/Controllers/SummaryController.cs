@@ -62,53 +62,32 @@ namespace Dlog.Api.Controllers
             return new ResponseModel()
             {
                 ServerResponse = new ServerResponseInfoModel(),
-                IndexArticles = summaries
+                ArticleSummaries = summaries
             };
         }
 
         [HttpGet]
         public ResponseModel GetTimeLine(int? year)
         {
-            var timeLine = new List<TimeLineNodeModel>()
-            {
-                new TimeLineNodeModel()
-                {
-                     BlogDate="2020-06-20",
-                     Title="测试文章",
-                     Url="this-is-an-test-article"
-                },
-                new TimeLineNodeModel()
-                {
-                     BlogDate="2020-04-10",
-                     Title="测试文章2",
-                     Url="this-is-an-test-article-2"
-                },
-                new TimeLineNodeModel()
-                {
-                     BlogDate="2020-03-30",
-                     Title="测试文章3",
-                     Url="this-is-an-test-article-3"
-                }
-            };
-            if (year == null)
-            {
-                timeLine.Add(new TimeLineNodeModel()
-                {
-                    BlogDate = "2019-10-16",
-                    Title = "又老了一岁",
-                    Url = "another-birthday"
-                });
-                timeLine.Add(new TimeLineNodeModel()
-                {
-                    BlogDate = "2018-10-16",
-                    Title = "Age++",
-                    Url = "birthday-2018"
-                });
-            }
             return new ResponseModel()
             {
                 ServerResponse = new ServerResponseInfoModel(),
-                TimeLine = timeLine.OrderByDescending(p => p.BlogDate).ToList()
+                TimeLine = database.GetTimeLine(year)
+            };
+        }
+
+        [HttpGet]
+        [Route("{tagId}")]
+        public ResponseModel GetArticlesByTag(string tagId)
+        {
+            if (string.IsNullOrEmpty(tagId))
+            {
+                return new ResponseModel();
+            }
+
+            return new ResponseModel()
+            {
+                ArticleSummaries = database.GetByTag(tagId).Select(p => p.ToSummary()).ToList()
             };
         }
     }

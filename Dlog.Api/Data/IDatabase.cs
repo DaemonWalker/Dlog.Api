@@ -15,5 +15,7 @@ namespace Dlog.Api.Data
         Dictionary<string, List<ServerArticleModel>> GetNavTimeLine();
         List<string> GetTimeLineNodes();
         List<string> GetTags();
+        List<TimeLineNodeModel> GetTimeLine(int? year);
+        List<ServerArticleModel> GetByTag(string tag);
     }
 }
