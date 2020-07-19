@@ -1,12 +1,12 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/aspnet:latest
+FROM mcr.microsoft.com/dotnet/aspnet:5.0
 MAINTAINER Daemon Walker
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:latest
+FROM mcr.microsoft.com/dotnet/sdk:5.0
 WORKDIR /src
 COPY ["Dlog.Api/Dlog.Api.csproj", "Dlog.Api/"]
 RUN dotnet restore "Dlog.Api/Dlog.Api.csproj"
