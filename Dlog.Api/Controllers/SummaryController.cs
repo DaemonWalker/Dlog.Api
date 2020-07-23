@@ -76,13 +76,15 @@ namespace Dlog.Api.Controllers
             };
         }
 
-        [HttpGet]
-        [Route("{tagId}")]
-        public ResponseModel GetArticlesByTag(string tagId)
+        [HttpPost]
+        public ResponseModel GetArticlesByTag([FromBody] string tagId)
         {
             if (string.IsNullOrEmpty(tagId))
             {
-                return new ResponseModel();
+                return new ResponseModel()
+                {
+                    ArticleSummaries = new List<ArticleSummaryModel>()
+                };
             }
 
             return new ResponseModel()

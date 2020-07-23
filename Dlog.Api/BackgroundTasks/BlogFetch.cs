@@ -21,9 +21,11 @@ namespace Dlog.Api.BackgroundTasks
         const string DATENAME = @"date";
         readonly Encoding contentEncoding = Encoding.UTF8;
         private readonly IDatabase database;
-        public BlogFetch(IDatabase database)
+        private readonly ISearch search;
+        public BlogFetch(IDatabase database,ISearch search)
         {
             this.database = database;
+            this.search = search;
         }
         public void FetchBlogs()
         {
@@ -42,10 +44,11 @@ namespace Dlog.Api.BackgroundTasks
                     article.Title = File.ReadAllText(files.First(p => p.Name == TITLENAME).FullName, contentEncoding);
                     article.Date = File.ReadAllText(files.First(p => p.Name == DATENAME).FullName, contentEncoding);
                     articleLists.Add(article);
+
+                    search.AddArticleData(article);
                 }
                 catch (Exception e)
                 {
-
                 }
             }
             database.UpdateArticles(articleLists);

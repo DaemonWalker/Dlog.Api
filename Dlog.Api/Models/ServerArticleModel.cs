@@ -1,6 +1,7 @@
 ﻿using Dlog.Api.Utils;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using Nest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 namespace Dlog.Api.Models
 {
     [BsonIgnoreExtraElements]
+    [ElasticsearchType(IdProperty =nameof(ID))]
     public class ServerArticleModel
     {
         [MongoKey]

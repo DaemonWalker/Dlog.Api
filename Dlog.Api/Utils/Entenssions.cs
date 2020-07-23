@@ -26,6 +26,16 @@ namespace Dlog.Api.Utils
                 Title = article.Title
             };
         }
+        public static ArticleModel ToArticle(this ServerArticleModel article)
+        {
+            return new ArticleModel()
+            {
+                Title = article.Title,
+                Content = article.Content,
+                Date = article.Date,
+                Tags = article.Tags
+            };
+        }
         public static LinkModel ToLink(this ServerArticleModel articleModel)
         {
             return new LinkModel()

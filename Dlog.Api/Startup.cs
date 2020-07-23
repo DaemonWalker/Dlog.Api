@@ -51,6 +51,7 @@ namespace Dlog.Api
 
             services.AddScoped<ICache, RedisCache>();
             services.AddScoped<IDatabase, MongoDatabase>();
+            services.AddSingleton<ISearch, ESClient>();
 
             services.AddTransient<BlogFetch>();
         }
@@ -78,6 +79,7 @@ namespace Dlog.Api
 
             app.UseHangfireDashboard();
             recurringJob.AddOrUpdate(nameof(BlogFetch), () => service.GetService<BlogFetch>().FetchBlogs(), "0 0/5 * * * ?");
+            BackgroundJob.Enqueue(() => service.GetService<BlogFetch>().FetchBlogs());
 
             app.UseStaticFiles(new StaticFileOptions()
             {
