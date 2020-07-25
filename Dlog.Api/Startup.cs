@@ -54,6 +54,11 @@ namespace Dlog.Api
             services.AddSingleton<ISearch, ESClient>();
 
             services.AddTransient<BlogFetch>();
+
+            services.AddLogging(config=>
+            {
+                config.AddConsole();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,5 +1,7 @@
 ﻿using CSRedis;
+using DnsClient.Internal;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +15,11 @@ namespace Dlog.Api.Data
         const string ARTICLE_SEEN = "SEEN";
         private readonly CSRedisClient redisDB;
 
-        public RedisCache(IConfiguration configuration)
+        public RedisCache(IConfiguration configuration,ILogger<RedisCache> logger)
         {
             var redis = configuration.GetSection("Redis");
             var redisContr = $"{redis["Address"]},defaultDatabase={redis["DefaultDatabase"]},password={redis["Password"]}";
+            logger.LogInformation(redisContr);
             redisDB = new CSRedisClient(redisContr);
             RedisHelper.Initialization(redisDB);
         }

@@ -1,6 +1,7 @@
 ﻿using Dlog.Api.Models;
 using Dlog.Api.Utils;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
@@ -14,10 +15,11 @@ namespace Dlog.Api.Data
     {
         private readonly IMongoDatabase mongoDB;
 
-        public MongoDatabase(IConfiguration configuration)
+        public MongoDatabase(IConfiguration configuration, ILogger<MongoDatabase> logger)
         {
             var mongo = configuration.GetSection("MongoDB");
             var mongoContr = $"mongodb://{mongo["Account"]}:{mongo["Password"]}@{mongo["Address"]}/?authSource={mongo["AuthSource"]}";
+            logger.LogInformation(mongoContr);
             mongoDB = new MongoClient(mongoContr).GetDatabase("blog");
         }
 
