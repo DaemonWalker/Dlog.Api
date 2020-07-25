@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Dlog.Api.Controllers
 {
+    [ApiController]
     [Route("api/[controller]/[action]")]
     public class SearchController: ControllerBase
     {
@@ -18,10 +19,13 @@ namespace Dlog.Api.Controllers
             this.search = search;
         }
         [Route("{text}")]
-        public List<ArticleModel> Get(string text)
+        public ResponseModel Get(string text)
         {
             var serverArticles= search.Search(text);
-            return serverArticles.Select(p => p.ToArticle()).ToList();
+            return new ResponseModel()
+            {
+                SearchResult = serverArticles.Select(p => p.ToSearchResult()).ToList()
+            };
         }
     }
 }

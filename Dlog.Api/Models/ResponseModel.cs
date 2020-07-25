@@ -15,5 +15,6 @@ namespace Dlog.Api.Models
         public string Token { get; set; }
         public List<TimeLineNodeModel> TimeLine { get; set; }
         public ArticleModel Article { get; set; }
+        public List<SearchResultModel> SearchResult { get; set; }
     }
 }

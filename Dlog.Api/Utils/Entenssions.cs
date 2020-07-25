@@ -45,6 +45,19 @@ namespace Dlog.Api.Utils
             };
         }
 
+        public static SearchResultModel ToSearchResult(this ServerArticleModel articleModel)
+        {
+            return new SearchResultModel()
+            {
+                Content = articleModel.Content,
+                Date = articleModel.Date,
+                ID = articleModel.ID,
+                Summary = articleModel.Summary,
+                Tags = articleModel.Tags,
+                Title = articleModel.Title
+            };
+        }
+
         public static Dictionary<TKey, List<TValue>> ToDictionaryNew<TKey, TValue>(this IEnumerable<TValue> values, Expression<Func<TValue, TKey>> keySelector)
         {
             var dictionary = new Dictionary<TKey, List<TValue>>();
