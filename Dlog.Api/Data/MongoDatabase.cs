@@ -62,7 +62,7 @@ namespace Dlog.Api.Data
         {
             var articles = mongoDB.GetArticle();
 
-            return articles.Find(Builders<ServerArticleModel>.Filter.Empty).Limit(10).SortBy(p => p.Date).ToList().ToList();
+            return articles.Find(Builders<ServerArticleModel>.Filter.Empty).Limit(10).SortByDescending(p => p.Date).ToList().ToList();
         }
         public Dictionary<string, List<ServerArticleModel>> GetNavTimeLine()
         {
