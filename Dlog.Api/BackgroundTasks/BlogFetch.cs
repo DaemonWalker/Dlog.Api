@@ -1,5 +1,6 @@
 ﻿using Dlog.Api.Data;
 using Dlog.Api.Models;
+using Dlog.Api.Utils;
 using Hangfire;
 using MongoDB.Driver;
 using System;
@@ -13,7 +14,6 @@ namespace Dlog.Api.BackgroundTasks
 {
     public class BlogFetch : JobActivator
     {
-        const string BLOGDIR = @"blogs";
         const string CONTENTNAME = @"content.md";
         const string TAGSNAME = @"tags";
         const string SUMMARYNAME = @"summary";
@@ -29,7 +29,7 @@ namespace Dlog.Api.BackgroundTasks
         }
         public void FetchBlogs()
         {
-            var blogDir = new DirectoryInfo(BLOGDIR);
+            var blogDir = new DirectoryInfo(Constance.BLOGDIRNAME);
             var articleLists = new List<ServerArticleModel>();
             foreach (var dir in blogDir.GetDirectories())
             {

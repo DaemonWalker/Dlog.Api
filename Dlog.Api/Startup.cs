@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Dlog.Api.BackgroundTasks;
 using Dlog.Api.Data;
+using Dlog.Api.Utils;
 using Hangfire;
 using Hangfire.MemoryStorage;
 using Microsoft.AspNetCore.Builder;
@@ -88,8 +89,8 @@ namespace Dlog.Api
 
             app.UseStaticFiles(new StaticFileOptions()
             {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Blogs")),
-                RequestPath = new PathString("/Blogs")
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), Constance.BLOGDIRNAME)),
+                RequestPath = new PathString($"/{Constance.BLOGDIRNAME}")
             });
         }
     }
