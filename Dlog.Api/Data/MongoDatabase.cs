@@ -88,7 +88,7 @@ namespace Dlog.Api.Data
             {
                 list.AddRange(tag);
             }
-            return list;
+            return list.Distinct().ToList();
         }
         public List<TimeLineNodeModel> GetTimeLine(int? year)
         {
