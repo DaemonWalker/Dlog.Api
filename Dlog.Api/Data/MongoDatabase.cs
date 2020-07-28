@@ -56,7 +56,7 @@ namespace Dlog.Api.Data
             var articles = mongoDB.GetArticle();
 
             return articles.Find(Builders<ServerArticleModel>.Filter.Gt(
-              p => p.Date, DateTime.Now.AddMonths(-3).ToString("yyyy-MM-dd"))).ToList();
+              p => p.Date, DateTime.Now.AddMonths(-3).ToString("yyyy-MM-dd"))).Limit(6).SortByDescending(p => p.Date).ToList();
         }
         public List<ServerArticleModel> GetIndexArticles()
         {
