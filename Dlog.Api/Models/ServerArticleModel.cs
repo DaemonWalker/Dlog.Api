@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Dlog.Api.Models
 {
     [BsonIgnoreExtraElements]
-    [ElasticsearchType(IdProperty =nameof(ID))]
+    [ElasticsearchType(IdProperty = nameof(ID))]
     public class ServerArticleModel
     {
         [MongoKey]
@@ -21,6 +21,7 @@ namespace Dlog.Api.Models
         public long Seen { get; set; }
         public List<string> Tags { get; set; }
         public string Date { get; set; }
+        public string Cover { get; set; }
 
     }
 }

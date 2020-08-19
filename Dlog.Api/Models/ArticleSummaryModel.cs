@@ -16,5 +16,6 @@ namespace Dlog.Api.Models
         public long Seen { get; set; }
         public int Likes { get; set; }
         public int Comments { get; set; }
+        public string Cover { get; set; }
     }
 }

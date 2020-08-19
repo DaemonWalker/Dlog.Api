@@ -342,3 +342,9 @@ healthchecksdb
 
 # dev config
 appsettings.Development.json
+
+Dlog.Api/blogs/*
+
+content.md
+info.json
+*.png
