@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using Dlog.Api.BackgroundTasks;
 using Dlog.Api.Data;
 using Dlog.Api.Utils;
-using Hangfire;
-using Hangfire.MemoryStorage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -46,10 +44,6 @@ namespace Dlog.Api
 
             services.AddCors(options => options.AddDefaultPolicy(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
-            services.AddHangfire(config =>
-                config.UseMemoryStorage());
-            services.AddHangfireServer();
-
             services.AddScoped<ICache, RedisCache>();
             services.AddScoped<IDatabase, MongoDatabase>();
             services.AddSingleton<ISearch, ESClient>();
@@ -63,7 +57,7 @@ namespace Dlog.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IRecurringJobManager recurringJob, IServiceProvider service)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider service)
         {
             if (env.IsDevelopment())
             {
@@ -83,15 +77,6 @@ namespace Dlog.Api
                 endpoints.MapControllers();
             });
 
-            app.UseHangfireDashboard();
-            recurringJob.AddOrUpdate(nameof(BlogFetch), () => service.GetService<BlogFetch>().FetchBlogs(), "0 0/5 * * * ?");
-            BackgroundJob.Enqueue(() => service.GetService<BlogFetch>().FetchBlogs());
-
-            app.UseStaticFiles(new StaticFileOptions()
-            {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), Constance.BLOGDIRNAME)),
-                RequestPath = new PathString($"/{Constance.BLOGDIRNAME}")
-            });
         }
     }
 }

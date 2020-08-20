@@ -23,7 +23,8 @@ namespace Dlog.Api.Utils
                 Summary = article.Summary,
                 Tags = article.Tags,
                 Url = article.ID,
-                Title = article.Title
+                Title = article.Title,
+                Cover = article.Cover
             };
         }
         public static ArticleModel ToArticle(this ServerArticleModel article)
