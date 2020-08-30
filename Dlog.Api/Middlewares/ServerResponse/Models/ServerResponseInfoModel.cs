@@ -5,7 +5,7 @@ using System.Net;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Dlog.Api.Models
+namespace Dlog.Api.Middlewares.ServerResponse.Models
 {
     public class ServerResponseInfoModel
     {
