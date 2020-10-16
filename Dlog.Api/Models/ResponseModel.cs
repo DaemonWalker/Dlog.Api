@@ -4,7 +4,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Dlog.Api.Middlewares.ServerResponse.Models
+namespace Dlog.Api.Models
 {
     public class ResponseModel
     {

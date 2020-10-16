@@ -6,8 +6,6 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Dlog.Api.BackgroundTasks;
 using Dlog.Api.Data;
-using Dlog.Api.Middlewares;
-using Dlog.Api.Middlewares.ServerResponse;
 using Dlog.Api.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,6 +22,8 @@ namespace Dlog.Api
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -50,7 +50,7 @@ namespace Dlog.Api
 
             services.AddTransient<BlogFetch>();
 
-            services.AddLogging(config =>
+            services.AddLogging(config=>
             {
                 config.AddConsole();
             });
@@ -59,14 +59,9 @@ namespace Dlog.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider service)
         {
-
             if (env.IsDevelopment())
             {
-                app.UseServerResponse(DeployModel.Develop);
-            }
-            else
-            {
-                app.UseServerResponse(DeployModel.Release);
+                app.UseDeveloperExceptionPage();
             }
 
             app.UseHttpsRedirection();
