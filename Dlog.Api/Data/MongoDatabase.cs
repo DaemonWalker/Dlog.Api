@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using Nest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,8 +24,6 @@ namespace Dlog.Api.Data
             mongoDB = new MongoClient(mongoContr).GetDatabase("blog");
         }
 
-
-
         public void UpdateArticles(List<ServerArticleModel> articles)
         {
             var articleDB = mongoDB.GetArticle();
@@ -33,6 +32,18 @@ namespace Dlog.Api.Data
                 articleDB.UpdateOne(
                     article.GetMongoKey(),
                     article.ToMongoUpdate(),
+                    options: new UpdateOptions() { IsUpsert = true });
+            }
+        }
+
+        public void UpdateSeries(List<ServerSeriesModel> seriesModels)
+        {
+            var seriesDB = mongoDB.GetSeries();
+            foreach (var item in seriesModels)
+            {
+                seriesDB.UpdateOne(
+                    item.GetMongoKey(), 
+                    item.ToMongoUpdate(), 
                     options: new UpdateOptions() { IsUpsert = true });
             }
         }
@@ -116,5 +127,35 @@ namespace Dlog.Api.Data
             var filter = Builders<ServerArticleModel>.Filter.All(p => p.Tags, new List<string>() { tag });
             return mongoDB.GetArticle().Find(filter).ToList();
         }
+
+        public List<SeriesModel> GetAllSeries()
+        {
+            var serieses = mongoDB.GetSeries();
+            return serieses.Find(Builders<ServerSeriesModel>.Filter.Empty)
+            .ToList()
+            .Select(p => new SeriesModel()
+            {
+                Name = p.Name,
+                Articles = p.Articles.Select(q => this.GetArticleByID(q).ToSummary()).ToList()
+            })
+            .ToList();
+        }
+
+        public SeriesModel GetCurrentSeries(string currentID)
+        {
+            var serieses = mongoDB.GetSeries();
+            var filter = Builders<ServerSeriesModel>.Filter.All(p => p.Articles, new List<string>() { currentID });
+            var serverSeries = serieses.Find(filter).FirstOrDefault();
+            if (serverSeries == default)
+            {
+                return default;
+            }
+            return new SeriesModel()
+            {
+                Name = serverSeries.Name,
+                Articles = serverSeries.Articles.Select(q => this.GetArticleByID(q).ToSummary()).ToList()
+            };
+        }
+
     }
 }

@@ -20,7 +20,7 @@
     },
     "Dlog.Api": {
       "commandName": "Project",
-      "launchBrowser": true,
+      "launchBrowser": false,
       "launchUrl": "api/Summary/GetNavData",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

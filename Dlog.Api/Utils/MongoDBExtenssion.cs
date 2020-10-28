@@ -15,6 +15,11 @@ namespace Dlog.Api.Utils
         {
             return mongoDB.GetCollection<ServerArticleModel>("article");
         }
+
+        public static IMongoCollection<ServerSeriesModel> GetSeries(this IMongoDatabase mongoDB)
+        {
+            return mongoDB.GetCollection<ServerSeriesModel>("series");
+        }
         public static List<KeyValuePair<string, object>> ToBasonFormat<T>(this T t)
         {
             return typeof(T)

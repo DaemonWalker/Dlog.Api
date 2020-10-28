@@ -17,7 +17,8 @@ namespace Dlog.Api.BackgroundTasks
     {
         const string CONTENTNAME = @"content.md";
         const string INFONAME = @"info.json";
-        readonly Encoding contentEncoding = Encoding.UTF8;
+        private static readonly Encoding contentEncoding = Encoding.UTF8;
+        private static readonly JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web);
         private readonly IDatabase database;
         private readonly ISearch search;
         private ILogger<BlogFetch> logger;
@@ -37,7 +38,7 @@ namespace Dlog.Api.BackgroundTasks
                 {
                     var files = dir.GetFiles();
                     var json = File.ReadAllText(files.First(p => p.Name == INFONAME).FullName, contentEncoding);
-                    var article = JsonSerializer.Deserialize<ServerArticleModel>(json, new JsonSerializerOptions(JsonSerializerDefaults.Web));
+                    var article = JsonSerializer.Deserialize<ServerArticleModel>(json, jsonSerializerOptions);
                     article.ID = dir.Name;
                     article.Content = File.ReadAllText(files.First(p => p.Name == CONTENTNAME).FullName, contentEncoding);
                     articleLists.Add(article);
@@ -50,6 +51,21 @@ namespace Dlog.Api.BackgroundTasks
                 }
             }
             database.UpdateArticles(articleLists);
+        }
+
+        public void FetchSeries()
+        {
+            var seriesDir = new DirectoryInfo(Constance.SERIESNAME);
+            var seriesList = new List<ServerSeriesModel>();
+            foreach (var file in seriesDir.GetFiles())
+            {
+                var json = File.ReadAllText(file.FullName, contentEncoding);
+                var series = JsonSerializer.Deserialize<ServerSeriesModel>(json, jsonSerializerOptions);
+
+                seriesList.Add(series);
+            }
+
+            database.UpdateSeries(seriesList);
         }
     }
 }

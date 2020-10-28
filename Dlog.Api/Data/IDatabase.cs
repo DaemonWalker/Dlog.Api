@@ -9,6 +9,7 @@ namespace Dlog.Api.Data
     public interface IDatabase
     {
         void UpdateArticles(List<ServerArticleModel> articles);
+        void UpdateSeries(List<ServerSeriesModel> seriesModels);
         ServerArticleModel GetArticleByID(string articleID);
         List<ServerArticleModel> GetLatestArticles();
         List<ServerArticleModel> GetIndexArticles();
@@ -17,5 +18,7 @@ namespace Dlog.Api.Data
         List<string> GetTags();
         List<TimeLineNodeModel> GetTimeLine(int? year);
         List<ServerArticleModel> GetByTag(string tag);
+        List<SeriesModel> GetAllSeries();
+        SeriesModel GetCurrentSeries(string articleID);
     }
 }
