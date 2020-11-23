@@ -42,8 +42,8 @@ namespace Dlog.Api.Data
             foreach (var item in seriesModels)
             {
                 seriesDB.UpdateOne(
-                    item.GetMongoKey(), 
-                    item.ToMongoUpdate(), 
+                    item.GetMongoKey(),
+                    item.ToMongoUpdate(),
                     options: new UpdateOptions() { IsUpsert = true });
             }
         }
@@ -67,13 +67,13 @@ namespace Dlog.Api.Data
             var articles = mongoDB.GetArticle();
 
             return articles.Find(Builders<ServerArticleModel>.Filter.Gt(
-              p => p.Date, DateTime.Now.AddMonths(-3).ToString("yyyy-MM-dd"))).Limit(6).SortByDescending(p => p.Date).ToList();
+              p => p.Date, DateTime.Now.AddMonths(-3).ToString("yyyy-MM-dd"))).SortByDescending(p => p.Date).ToList();
         }
         public List<ServerArticleModel> GetIndexArticles()
         {
             var articles = mongoDB.GetArticle();
 
-            return articles.Find(Builders<ServerArticleModel>.Filter.Empty).Limit(10).SortByDescending(p => p.Date).ToList().ToList();
+            return articles.Find(Builders<ServerArticleModel>.Filter.Empty).SortByDescending(p => p.Date).ToList().ToList();
         }
         public Dictionary<string, List<ServerArticleModel>> GetNavTimeLine()
         {
@@ -132,13 +132,13 @@ namespace Dlog.Api.Data
         {
             var serieses = mongoDB.GetSeries();
             return serieses.Find(Builders<ServerSeriesModel>.Filter.Empty)
-            .ToList()
-            .Select(p => new SeriesModel()
-            {
-                Name = p.Name,
-                Articles = p.Articles.Select(q => this.GetArticleByID(q).ToSummary()).ToList()
-            })
-            .ToList();
+                .ToList()
+                .Select(p => new SeriesModel()
+                {
+                    Name = p.Name,
+                    Articles = p.Articles.Select(q => this.GetArticleByID(q).ToSummary()).ToList()
+                })
+                .ToList();
         }
 
         public SeriesModel GetCurrentSeries(string currentID)
