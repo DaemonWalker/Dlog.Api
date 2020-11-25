@@ -99,7 +99,7 @@ namespace Dlog.Api.Data
             {
                 list.AddRange(tag);
             }
-            return list.Distinct().ToList();
+            return list.Distinct().OrderBy(p => p).ToList();
         }
         public List<TimeLineNodeModel> GetTimeLine(int? year)
         {

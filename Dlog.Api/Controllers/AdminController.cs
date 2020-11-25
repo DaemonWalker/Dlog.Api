@@ -37,7 +37,7 @@ namespace Dlog.Api.Controllers
             {
                 return Unauthorized("错误的密码");
             }
-            return null;
+            return Ok();
         }
     }
 }
