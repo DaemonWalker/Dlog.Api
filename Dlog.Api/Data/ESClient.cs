@@ -47,7 +47,7 @@ namespace Dlog.Api.Data
             var es = configuration.GetSection("ES");
             index = ((ESIndexNameAttribute)typeof(T)
                .GetCustomAttributes(false)
-               .First(predicate => predicate.GetType() == typeof(T)))
+               .First(predicate => predicate.GetType() == typeof(ESIndexNameAttribute)))
                .Name;
             var conn = new ConnectionSettings(new Uri(es["url"]))
                 .DefaultIndex(index).DefaultMappingFor<ServerArticleModel>(m => m.IdProperty(p => p.ID));
