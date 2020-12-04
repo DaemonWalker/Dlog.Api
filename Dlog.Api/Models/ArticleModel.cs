@@ -12,5 +12,6 @@ namespace Dlog.Api.Models
         public List<string> Tags { get; set; }
         public string Date { get; set; }
         public long Seen { get; set; }
+        public string Summary { get; set; }
     }
 }

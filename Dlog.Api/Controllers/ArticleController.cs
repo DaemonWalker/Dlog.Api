@@ -23,7 +23,8 @@ namespace Dlog.Api.Controllers
                 Date = serverArticle.Date,
                 Seen = serverArticle.Seen,
                 Tags = serverArticle.Tags,
-                Title = serverArticle.Title
+                Title = serverArticle.Title,
+                Summary = serverArticle.Summary
             };
             return new ResponseModel()
             {
