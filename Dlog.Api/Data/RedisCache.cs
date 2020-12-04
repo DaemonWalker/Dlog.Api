@@ -13,9 +13,10 @@ namespace Dlog.Api.Data
     {
         const string ARTICLE_LIST = "ARTICLELIST";
         const string ARTICLE_SEEN = "SEEN";
+        const string GENERATE_WORDS = "WORDS";
         private readonly CSRedisClient redisDB;
 
-        public RedisCache(IConfiguration configuration,ILogger<RedisCache> logger)
+        public RedisCache(IConfiguration configuration, ILogger<RedisCache> logger)
         {
             var redis = configuration.GetSection("Redis");
             var redisContr = $"{redis["Address"]},defaultDatabase={redis["DefaultDatabase"]},password={redis["Password"]}";
@@ -46,6 +47,11 @@ namespace Dlog.Api.Data
         public Dictionary<string, long> GetAllSeen()
         {
             return redisDB.HGetAll<long>(ARTICLE_SEEN);
+        }
+
+        public Task<string[]> GetWordsAsync()
+        {
+            return redisDB.SMembersAsync(GENERATE_WORDS);
         }
     }
 }
