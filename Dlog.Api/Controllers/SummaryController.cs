@@ -92,9 +92,15 @@ namespace Dlog.Api.Controllers
                 };
             }
 
+            var articleSummaries = database.GetByTag(tagId).Select(p => p.ToSummary()).ToList();
+            foreach (var summary in articleSummaries)
+            {
+                summary.Seen = this.cache.GetSeen(summary.Url);
+            }
+
             return new ResponseModel()
             {
-                ArticleSummaries = database.GetByTag(tagId).Select(p => p.ToSummary()).ToList()
+                ArticleSummaries = articleSummaries
             };
         }
     }
