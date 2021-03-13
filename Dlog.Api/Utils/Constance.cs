@@ -8,5 +8,6 @@ namespace Dlog.Api.Utils
     public class Constance
     {
         public const string BLOGDIRNAME = "blogs";
+        public const string SERIESNAME = "series";
     }
 }

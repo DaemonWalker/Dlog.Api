@@ -348,3 +348,5 @@ Dlog.Api/blogs/*
 content.md
 info.json
 *.png
+Dlog.Api/sitemap.xml
+Dlog.Api/sitemap/sitemap.xml

@@ -25,21 +25,26 @@ namespace Dlog.Api.Controllers
                 Content = p,
                 Url = p.Replace("-", "")
             }).ToList();
-            var tags = database.GetTags().Select(p => new LinkModel()
-            {
-                Content = p,
-                Url = p
-            }).ToList();
             var navData = new NavDataModel()
             {
                 Recents = recents,
-                TimeLine = timeline,
-                Tags = tags
+                TimeLine = timeline
             };
 
             return new ResponseModel()
             {
                 NavData = navData,
+                ServerResponse = new ServerResponseInfoModel()
+            };
+        }
+
+        [HttpGet]
+        public ResponseModel GetTags()
+        {
+            var tags = database.GetTags();
+            return new ResponseModel()
+            {
+                Tags = tags,
                 ServerResponse = new ServerResponseInfoModel()
             };
         }
@@ -87,9 +92,15 @@ namespace Dlog.Api.Controllers
                 };
             }
 
+            var articleSummaries = database.GetByTag(tagId).Select(p => p.ToSummary()).ToList();
+            foreach (var summary in articleSummaries)
+            {
+                summary.Seen = this.cache.GetSeen(summary.Url);
+            }
+
             return new ResponseModel()
             {
-                ArticleSummaries = database.GetByTag(tagId).Select(p => p.ToSummary()).ToList()
+                ArticleSummaries = articleSummaries
             };
         }
     }

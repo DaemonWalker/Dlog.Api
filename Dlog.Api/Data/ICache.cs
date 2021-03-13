@@ -12,5 +12,6 @@ namespace Dlog.Api.Data
         void AddSeen(string article);
         void SetArticleList(List<string> articles);
         List<string> GetArticleList();
+        Task<string[]> GetWordsAsync();
     }
 }

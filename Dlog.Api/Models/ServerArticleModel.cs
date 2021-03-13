@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Dlog.Api.Models
 {
+    [ESIndexName("blogs")]
     [BsonIgnoreExtraElements]
     [ElasticsearchType(IdProperty = nameof(ID))]
     public class ServerArticleModel

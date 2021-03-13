@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Dlog.Api.BackgroundTasks;
 using Dlog.Api.Data;
+using Dlog.Api.Midwares;
 using Dlog.Api.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,8 +23,6 @@ namespace Dlog.Api
 {
     public class Startup
     {
-        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -50,10 +49,12 @@ namespace Dlog.Api
 
             services.AddTransient<BlogFetch>();
 
-            services.AddLogging(config=>
+            services.AddLogging(config =>
             {
                 config.AddConsole();
             });
+
+            services.AddHostedService<SitemapGenerator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,6 +70,12 @@ namespace Dlog.Api
             app.UseRouting();
 
             app.UseCors();
+
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), SitemapGenerator.SITEMAPDIR)),
+                RequestPath = new PathString($"/{SitemapGenerator.SITEMAPDIR}")
+            });
 
             app.UseAuthorization();
 
